@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block title_page  %} Formulário de Produto {% endblock %}
+
+
+{% block conteudo  %}  
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="csrfmiddlewaretoken" value="PohNeyDFSIA86N4aBnhYiq@KadF9m9jKIiScSSzt3BV05lqKv19MgwAoi9ZcrrXl">
+    
+        <p>
+            <label for="id_nome">Nome:</label>
+            <input type="text" name="nome" class="form-control" placeholder="Nome" maxlength="100" required id="id_nome">
+        </p>
+
+        <p>
+            <label for="id_ordem">Ordem:</label>
+            <input type="number" name="ordem" class="inteiro form-control" placeholder="Digite a ordem" required id="id_ordem">
+        </p>
+        
+        <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+
+    
+
+{% endblock %}
+
