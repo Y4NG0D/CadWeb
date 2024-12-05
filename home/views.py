@@ -12,15 +12,37 @@ def categoria(request):
     }
     return render(request, 'categoria/lista.html', contexto)
 
-def forms(request):
-    if request.method == 'POST':
-       form = CategoriaForm(request.POST) # instancia o modelo com os dados do form
-       if form.is_valid():# faz a validação do formulário
-            form.save() # salva a instancia do modelo no banco de dados
-            return redirect('categoria') # redireciona para a listagem
-    else:# método é get, novo registro
-        form = CategoriaForm() # formulário vazio
+def formsCat(request):
+    if (request.method == 'POST'):
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            categoria = form.save(commit=False)
+            categoria.nome = form.data['nome']
+            categoria.ordem = form.data['ordem']
+            categoria.save()
+            return redirect('lista')
+    else: 
+        form = CategoriaForm()
+    
     contexto = {
-        'form':form,
+        'form': form,
     }
     return render(request, 'categoria/forms.html', contexto)
+
+def editarCat(request, pk):
+    categoria = Categoria.objects.get(pk=pk)
+    if (request.method == 'POST'):
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            categoria = form.save(commit=False)
+            categoria.nome = form.data['nome']
+            categoria.ordem = form.data['ordem']
+            categoria.save()
+            return redirect('lista')
+    else: 
+        form = CategoriaForm(instance=categoria)
+    
+    contexto = {
+        'form': form,
+    }
+    return render(request, 'categoria/formulario.html', contexto)

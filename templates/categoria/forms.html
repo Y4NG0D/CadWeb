@@ -1,30 +1,14 @@
 {% extends 'base.html' %}
 
+{% block titulo_conteudo %}  Formulário do Produto: {% endblock titulo_conteudo %}
 
-{% block title_page  %} Formulário de Produto {% endblock %}
+{% block conteudo %} 
 
-
-{% block conteudo  %}  
-
-    <form method="post">
+    <form method = "post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="hidden" name="csrfmiddlewaretoken" value="PohNeyDFSIA86N4aBnhYiq@KadF9m9jKIiScSSzt3BV05lqKv19MgwAoi9ZcrrXl">
-    
-        <p>
-            <label for="id_nome">Nome:</label>
-            <input type="text" name="nome" class="form-control" placeholder="Nome" maxlength="100" required id="id_nome">
-        </p>
-
-        <p>
-            <label for="id_ordem">Ordem:</label>
-            <input type="number" name="ordem" class="inteiro form-control" placeholder="Digite a ordem" required id="id_ordem">
-        </p>
-        
-        <button class="btn btn-primary" type="submit">Enviar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-secondary" onclick="location.href='{% url 'lista' %}'">Voltar</button>
     </form>
 
-    
-
 {% endblock %}
-

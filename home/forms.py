@@ -1,12 +1,7 @@
-from django import forms
+from django.forms import ModelForm
 from .models import *
 
-
-class CategoriaForm(forms.ModelForm):
-    class Meta:
-        model = Categoria
-        fields = ['nome', 'ordem']
-        widgets = {
-            'nome':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}),
-            'ordem':forms.NumberInput(attrs={'class': 'inteiro form-control', 'placeholder': ''}),
-        }
+class CategoriaForm(ModelForm):
+     class Meta:
+          model = Categoria
+          fields = ['nome', 'ordem']
