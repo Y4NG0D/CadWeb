@@ -45,4 +45,18 @@ def editarCat(request, pk):
     contexto = {
         'form': form,
     }
-    return render(request, 'categoria/formulario.html', contexto)
+    return render(request, 'categoria/forms.html', {'form':form,})
+
+def deletarCat(request, pk):
+    categoria = Categoria.objects.get(pk=pk)
+    categoria.delete()
+    form = CategoriaForm()
+    return  render(request, 'categoria/lista.html')
+
+def detalheCat(request, pk):
+    categoria = Categoria.objects.get(pk=pk)
+    form = CategoriaForm(instance=categoria)
+    contexto = {
+        'form': form,
+    }
+    return render(request, 'categoria/detalhe.html', contexto)

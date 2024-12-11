@@ -25,14 +25,36 @@
                 <td>{{categoria.nome}}</td>
                 <td>{{categoria.ordem}}</td>
                 <td>
-                    <button type="button" class="btn btn-info">Detalhes</button>
-                    <button type="button" class="btn btn-warning">Alterar</button>
-                    <button type="button" class="btn btn-danger">Excluir</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='{% url 'detalheCat' categoria.id%}'">Detalhes</button>
+                    <button type="button" class="btn btn-warning" onclick="location.href='{% url 'editarCat' categoria.id %}'">Editar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmClose(location.href='{% url 'deletarCat' categoria.id %}')">Excluir</button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function confirmClose(url) {
+            const confirmar = confirm("Confirme para excluir a categoria selecionada ?");
+            if (confirmar) {
+                window.location.href = location.href='{% url 'lista' %}';     
+            }
+            window.location.href = location.href='{% url 'lista' %}';   
+        }
+    </script>
+
+    {% comment %} <script>
+        function confirmClose(url) {
+            const confirmar = confirm("Confirme para excluir o produto ?");
+            if (confirmar) {
+                window.location.href = url;
+            }
+            else{
+                window.location.href = location.href='{% url 'produtos' %}';
+            }
+        }
+    </script> {% endcomment %}
 
 
 {% endblock conteudo %}
