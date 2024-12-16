@@ -45,7 +45,7 @@ def editarCat(request, pk):
 
     return render(request, 'categoria/forms.html', {'form': form})
 
-def deletarCat(request, id):
+def deletarCat(request, pk):
     try:
         categoria = Categoria.objects.get(pk=pk)
         categoria.delete()
@@ -60,7 +60,7 @@ def deletarCat(request, id):
     return redirect('lista')
 
 
-def detalheCat(request, id):
+def detalheCat(request, pk):
     try:
         categoria = get_object_or_404(Categoria, pk=pk)
     except:
