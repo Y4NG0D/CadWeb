@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .models import *
 from .forms import *
 
@@ -25,7 +25,7 @@ def formsCat(request):
     else: 
         form = CategoriaForm()
     
-    return render(request, 'categoria/formulario.html', {'form': form,})
+    return render(request, 'categoria/forms.html', {'form': form,})
 
 def editarCat(request, id):
     try:
@@ -45,7 +45,7 @@ def editarCat(request, id):
     else: 
         form = CategoriaForm(instance=categoria)
     
-    return render(request, 'categoria/formulario.html', {'form':form,})
+    return render(request, 'categoria/forms.html', {'form':form,})
 
 def deletarCat(request, id):
     try:
@@ -58,11 +58,11 @@ def deletarCat(request, id):
     
     return redirect('lista')
 
-def detalheCat(request, pk):
+def detalheCat(request, id):
     try:
         categoria = get_object_or_404(Categoria, pk=id)
     except:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
 
-    return render(request, 'categoria/detalhes.html', {'categoria':categoria,})
+    return render(request, 'categoria/detalhe.html', {'categoria':categoria,})
