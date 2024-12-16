@@ -16,47 +16,53 @@ def formsCat(request):
     if (request.method == 'POST'):
         form = CategoriaForm(request.POST)
         if form.is_valid():
-            categoria = form.save(commit=False)
-            categoria.nome = form.data['nome']
-            categoria.ordem = form.data['ordem']
-            categoria.save()
-            return redirect('lista')
+            salvando = form.save()
+            lista=[]
+            lista.append(salvando)
+            messages.success(request, 'Operação realizda com Sucesso.')
+            return render(request, 'categoria/lista.html', {'lista':lista,})
+        
     else: 
         form = CategoriaForm()
     
-    contexto = {
-        'form': form,
-    }
-    return render(request, 'categoria/forms.html', contexto)
+    return render(request, 'categoria/formulario.html', {'form': form,})
 
-def editarCat(request, pk):
-    categoria = Categoria.objects.get(pk=pk)
+def editarCat(request, id):
+    try:
+        categoria = Categoria.objects.get(pk=id)
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('lista')
+
     if (request.method == 'POST'):
         form = CategoriaForm(request.POST, instance=categoria)
         if form.is_valid():
-            categoria = form.save(commit=False)
-            categoria.nome = form.data['nome']
-            categoria.ordem = form.data['ordem']
-            categoria.save()
-            return redirect('lista')
+            categoria = form.save()
+            lista=[]
+            lista.append(categoria)
+            return render(request, 'categoria/lista.html', {'lista':lista,})
+
     else: 
         form = CategoriaForm(instance=categoria)
     
-    contexto = {
-        'form': form,
-    }
-    return render(request, 'categoria/forms.html', {'form':form,})
+    return render(request, 'categoria/formulario.html', {'form':form,})
 
-def deletarCat(request, pk):
-    categoria = Categoria.objects.get(pk=pk)
-    categoria.delete()
-    form = CategoriaForm()
-    return  render(request, 'categoria/lista.html')
+def deletarCat(request, id):
+    try:
+        categoria = Categoria.objects.get(pk=id)
+        categoria.delete()
+        messages.success(request, 'Exclusão realizda com Sucesso.')
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('lista')
+    
+    return redirect('lista')
 
 def detalheCat(request, pk):
-    categoria = Categoria.objects.get(pk=pk)
-    form = CategoriaForm(instance=categoria)
-    contexto = {
-        'form': form,
-    }
-    return render(request, 'categoria/detalhe.html', contexto)
+    try:
+        categoria = get_object_or_404(Categoria, pk=id)
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('lista')
+
+    return render(request, 'categoria/detalhes.html', {'categoria':categoria,})
