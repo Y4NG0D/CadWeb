@@ -45,16 +45,20 @@ def editarCat(request, pk):
 
     return render(request, 'categoria/forms.html', {'form': form})
 
-def deletarCat(request, id):
+def remover_categoria(request, id):
     try:
         categoria = Categoria.objects.get(pk=id)
         categoria.delete()
-        messages.success(request, 'Exclusão realizda com Sucesso.')
-    except:
+        messages.success(request, 'Exclusão realizada com sucesso.')
+    except Categoria.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
+        return redirect('lista')
+    except Exception as e:
+        messages.error(request, f'Ocorreu um erro inesperado: {e}')
         return redirect('lista')
     
     return redirect('lista')
+
 
 def detalheCat(request, id):
     try:
