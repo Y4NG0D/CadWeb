@@ -60,9 +60,9 @@ def deletarCat(request, pk):
     return redirect('lista')
 
 
-def detalheCat(request, pk, id):
+def detalheCat(request, pk):
     try:
-        categoria = get_object_or_404(Categoria, pk=id)
+        categoria = get_object_or_404(Categoria, pk=pk)
     except:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
