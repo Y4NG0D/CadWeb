@@ -27,9 +27,9 @@ def formsCat(request):
     
     return render(request, 'categoria/forms.html', {'form': form,})
 
-def editarCat(request, id):
+def editarCat(request, pk):
     try:
-        categoria = Categoria.objects.get(pk=id)
+        categoria = Categoria.objects.get(pk=pk)  # Usa o pk recebido
     except Categoria.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
@@ -37,12 +37,12 @@ def editarCat(request, id):
     if request.method == 'POST':
         form = CategoriaForm(request.POST, instance=categoria)
         if form.is_valid():
-            form.save()
-            return redirect('lista')
+            form.save()  # Salva o formulário
+            return redirect('lista')  # Redireciona para a lista de categorias
 
-    else: 
+    else:
         form = CategoriaForm(instance=categoria)
-    
+
     return render(request, 'categoria/forms.html', {'form': form})
 
 def deletarCat(request, id):
