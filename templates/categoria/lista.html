@@ -7,8 +7,10 @@
 {% endblock titulo_conteudo %}
 
 {% block conteudo %}
-
-    <button type="button" class="btn btn-primary" onclick="location.href='{% url 'formsCat' %}'">Novo Produto</button> <br><br>
+    <div class="barrabotoes">
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'formsCat' %}'">Novo Categoria</button> 
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'lista' %}'">Recarregar</button> 
+        </div>
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
@@ -26,35 +28,21 @@
                 <td>{{categoria.ordem}}</td>
                 <td>
                     <button type="button" class="btn btn-info" onclick="location.href='{% url 'detalheCat' categoria.id%}'">Detalhes</button>
-                    <button type="button" class="btn btn-warning" onclick="location.href='{% url 'editarCat' categoria.id %}'">Editar</button>
-                    <button type="button" class="btn btn-danger" onclick="confirmClose(location.href='{% url 'deletarCat' categoria.id %}')">Excluir</button>
+                    <button type="button" class="btn btn-warning" onclick="location.href='{% url 'editarCat' categoria.id %}'">Alterar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmClose('{% url 'deletarCat' categoria.id %}')">Excluir</button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <script>
+    <script> 
         function confirmClose(url) {
-            const confirmar = confirm("Confirme para excluir a categoria selecionada ?");
+            const confirmar = confirm("Confirme para excluir a categoria selecionada?");
             if (confirmar) {
-                window.location.href = location.href='{% url 'lista' %}';     
+                window.location.href = url; 
             }
-            window.location.href = location.href='{% url 'lista' %}';   
         }
     </script>
-
-    {% comment %} <script>
-        function confirmClose(url) {
-            const confirmar = confirm("Confirme para excluir o produto ?");
-            if (confirmar) {
-                window.location.href = url;
-            }
-            else{
-                window.location.href = location.href='{% url 'produtos' %}';
-            }
-        }
-    </script> {% endcomment %}
-
-
+    
 {% endblock conteudo %}
