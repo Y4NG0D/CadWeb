@@ -47,7 +47,7 @@ def editarCat(request, pk):
 
 def deletarCat(request, id):
     try:
-        categoria = Categoria.objects.get(pk=id)
+        categoria = Categoria.objects.get(pk=pk)
         categoria.delete()
         messages.success(request, 'Exclusão realizada com sucesso.')
     except Categoria.DoesNotExist:
@@ -62,7 +62,7 @@ def deletarCat(request, id):
 
 def detalheCat(request, id):
     try:
-        categoria = get_object_or_404(Categoria, pk=id)
+        categoria = get_object_or_404(Categoria, pk=pk)
     except:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
