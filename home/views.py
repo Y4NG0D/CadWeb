@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import *
@@ -27,9 +28,9 @@ def formsCat(request):
     
     return render(request, 'categoria/forms.html', {'form': form,})
 
-def editarCat(request, pk):
+def editarCat(request, id):
     try:
-        categoria = Categoria.objects.get(pk=pk)  # Usa o pk recebido
+        categoria = Categoria.objects.get(id=id)  # Usa o pk recebido
     except Categoria.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
@@ -45,9 +46,9 @@ def editarCat(request, pk):
 
     return render(request, 'categoria/forms.html', {'form': form})
 
-def deletarCat(request, pk):
+def deletarCat(request, id):
     try:
-        categoria = Categoria.objects.get(pk=pk)
+        categoria = Categoria.objects.get(id=id)
         categoria.delete()
         messages.success(request, 'Exclusão realizada com sucesso.')
     except Categoria.DoesNotExist:
@@ -60,9 +61,9 @@ def deletarCat(request, pk):
     return redirect('lista')
 
 
-def detalheCat(request, pk):
+def detalheCat(request, id):
     try:
-        categoria = get_object_or_404(Categoria, pk=pk)
+        categoria = get_object_or_404(Categoria, pk=id)
     except:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
