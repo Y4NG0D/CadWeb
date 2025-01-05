@@ -53,8 +53,6 @@ body {
     color: #fff;
 }
 
-
-
 .card-custom {
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -89,14 +87,11 @@ body {
 
 h5{
     margin: 5px;
-
 }
 
 
 .errorlist {
-    list-style-type: none; /* Remove os pontinhos */
-
- 
+    list-style-type: none; /* Remove os pontinhos */ 
 }
 
 .canvas {
@@ -111,3 +106,7 @@ h5{
     border: 1px solid rgba(0, 0, 0, 0.2); /* Borda clarinha */
     font-size: 1rem;
   }
+.exibir_infor{
+    margin-bottom: 10.5rem; /* Ajuste o valor conforme necessário */
+    padding: 5px;
+}

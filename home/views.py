@@ -69,3 +69,67 @@ def detalheCat(request, id):
         return redirect('lista')
 
     return render(request, 'categoria/detalhe.html', {'categoria':categoria,})
+
+# Clientes Formulário
+def cliente(request):
+    contexto={
+        'listaCliente': Cliente.objects.all().order_by('-id')
+    }
+    return render(request,'cliente/lista.html', contexto)
+
+def form_cliente(request):
+    if (request.method == 'POST'):
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            salvando = form.save()
+            listaCliente=[]
+            listaCliente.append(salvando)
+            messages.success(request, 'Operação realizda com Sucesso.')
+            return render(request, 'cliente/lista.html', {'listaCliente':listaCliente,})
+        
+    else: 
+        form = ClienteForm()
+    
+    return render(request, 'cliente/formulario.html', {'form': form,})
+
+
+def editar_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(pk=id)
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('listaCliente')
+
+    if (request.method == 'POST'):
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            cliente = form.save()
+            listaCliente=[]
+            listaCliente.append(cliente)
+            return render(request, 'cliente/lista.html', {'listaCliente':listaCliente,})
+
+    else: 
+        form = ClienteForm(instance=cliente)
+    
+    return render(request, 'cliente/formulario.html', {'form':form,})
+
+
+def remover_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(pk=id)
+        cliente.delete()
+        messages.success(request, 'Exclusão realizda com Sucesso.')
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('listaCliente')
+    
+    return redirect('listaCliente')
+
+def detalhe_cliente(request, id):
+    try:
+        cliente = get_object_or_404(Cliente, pk=id)
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('listaCliente')
+
+    return render(request, 'cliente/detalhes.html', {'cliente':cliente,})
