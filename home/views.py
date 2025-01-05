@@ -70,7 +70,6 @@ def detalheCat(request, id):
 
     return render(request, 'categoria/detalhe.html', {'categoria':categoria,})
 
-# Clientes Formulário
 def cliente(request):
     contexto={
         'listaCliente': Cliente.objects.all().order_by('-id')
