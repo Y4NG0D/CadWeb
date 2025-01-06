@@ -132,3 +132,60 @@ def detalhe_cliente(request, id):
         return redirect('listaCliente')
 
     return render(request, 'cliente/detalhes.html', {'cliente':cliente,})
+
+def produto(request):
+    contexto = {
+        'listaProduto': Produto.objects.all().order_by('-id')
+    }
+    return render(request, 'produto/lista.html', contexto)
+
+def form_produto(request):
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST)
+        if form.is_valid():
+            salvando = form.save()
+            messages.success(request, 'Operação realizada com Sucesso.')
+            return redirect('listaProduto')
+    else:
+        form = ProdutoForm()
+    
+    return render(request, 'produto/form.html', {'form': form})
+
+def editar_produto(request, id):
+    try:
+        produto = Produto.objects.get(pk=id)
+    except Produto.DoesNotExist:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('listaProduto')
+
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST, instance=produto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Operação realizada com Sucesso.')
+            return redirect('listaProduto')
+    else:
+        form = ProdutoForm(instance=produto)
+
+    return render(request, 'produto/form.html', {'form': form})
+
+def remover_produto(request, id):
+    try:
+        produto = Produto.objects.get(pk=id)
+        produto.delete()
+        messages.success(request, 'Exclusão realizada com Sucesso.')
+    except Produto.DoesNotExist:
+        messages.error(request, 'Registro não encontrado')
+    except Exception as e:
+        messages.error(request, f'Ocorreu um erro inesperado: {e}')
+    
+    return redirect('listaProduto')
+
+def detalhe_produto(request, id):
+    try:
+        produto = get_object_or_404(Produto, pk=id)
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('listaProduto')
+
+    return render(request, 'produto/detalhes.html', {'produto': produto})
