@@ -1,8 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import *
-from .forms import *
+from .models import Categoria, Cliente, Produto
+from .forms import CategoriaForm, ClienteForm, ProdutoForm
 
 def index(request):
     return render(request,'index.html')
@@ -20,7 +20,7 @@ def formsCat(request):
             salvando = form.save()
             lista=[]
             lista.append(salvando)
-            messages.success(request, 'Operação realizda com Sucesso.')
+            messages.success(request, 'Operação realizada com Sucesso.')
             return render(request, 'categoria/lista.html', {'lista':lista,})
         
     else: 
@@ -64,7 +64,7 @@ def deletarCat(request, id):
 def detalheCat(request, id):
     try:
         categoria = get_object_or_404(Categoria, pk=id)
-    except:
+    except Cliente.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
         return redirect('lista')
 
@@ -83,7 +83,7 @@ def form_cliente(request):
             salvando = form.save()
             listaCliente=[]
             listaCliente.append(salvando)
-            messages.success(request, 'Operação realizda com Sucesso.')
+            messages.success(request, 'Operação realizada com Sucesso.')
             return render(request, 'cliente/lista.html', {'listaCliente':listaCliente,})
         
     else: 
@@ -95,7 +95,7 @@ def form_cliente(request):
 def editar_cliente(request, id):
     try:
         cliente = Cliente.objects.get(pk=id)
-    except:
+    except Cliente.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
         return redirect('listaCliente')
 
@@ -117,7 +117,7 @@ def remover_cliente(request, id):
     try:
         cliente = Cliente.objects.get(pk=id)
         cliente.delete()
-        messages.success(request, 'Exclusão realizda com Sucesso.')
+        messages.success(request, 'Exclusão realizada com Sucesso.')
     except:
         messages.error(request, 'Registro não encontrado')
         return redirect('listaCliente')
