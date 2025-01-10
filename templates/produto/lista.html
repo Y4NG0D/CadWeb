@@ -17,6 +17,7 @@
         <th>Nome</th>
         <th>Preço(R$)</th>
         <th>Categoria</th>
+        <th>QTDE</th>
          <th>Ações</th>
       </tr>
     </thead>
@@ -27,8 +28,10 @@
         <td>{{ produto.nome }}</td>
         <td>{{ produto.preco}}</td>
         <td>{{ produto.categoria }}</td>
+        <td>{{ produto.estoque.qtde }}</td>
         <td>
           <button onclick="location='{% url 'detalhe_produto' produto.id %}'" class="btn btn-info btn-sm">Detalhes </button>
+          <a href="{% url 'ajustar_estoque' produto.id %}" class="btn btn-sucess btn-sm">Estoque</a>
           <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm">Editar</a>
           <a href="{% url 'remover_produto' produto.id %}" class="btn btn-danger btn-sm" 
           onclick="return confirm('Tem certeza que deseja remover este registro?');">Remover</a>

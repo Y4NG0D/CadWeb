@@ -98,4 +98,14 @@ class ProdutoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProdutoForm, self).__init__(*args, **kwargs)
         self.fields['preco'].localize = True
-        self.fields['preco'].widget.is_localized = True  
+        self.fields['preco'].widget.is_localized = True
+
+class EstoqueForm(forms.ModelForm):
+    class Meta:
+        model: Estoque
+        fields = ['produto', 'qtde']
+
+        widgets = {
+            'produto': forms.HiddenInput(),
+            'qtde': forms.TextInput(attrs={'class': 'inteiro form-control',}),
+        }

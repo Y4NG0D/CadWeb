@@ -15,31 +15,14 @@
 
     <label for="id_ordem">Categoria:</label>
     <span class="form-control" style="margin-bottom: 0.6rem;">{{ produto.categoria }}</span>
-    
-    {% comment %} <label for="id_ordem">:</label>
-    <span class="form-control" style="margin-bottom: 0.6rem;">{{ produto.imagem }}</span> {% endcomment %}
-    
-    <span class="form-control" style="margin-bottom: 0.6rem;">{{ produto.img_base64 }}</span> 
 
-    <fieldset class="fieldset">
-        <label for="imagem">Imagem:</label>
-        <input type="hidden" id="img_base64"  class="img_init" data-canvas="imageCanvas" value="{{ produto.img_base64 }}" name="img_base64">
-        <canvas class="canvas"  id="imageCanvas" width="200" height="200"></canvas><br>
-    </fieldset>
-    
+    <label >Imagem:</label><br>
+    <span class="form-control"> 
+       <img  src="{{produto.img_base64}} " width="200" height="200">
+    </span>
+ 
+<p>
     <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'listaProduto' %}'">Voltar</button>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var imgBase64 = document.getElementById("img_base64").value;
-        var canvas = document.getElementById("imageCanvas");
-        var ctx = canvas.getContext("2d");
-        var img = new Image();
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        }
-        img.src = "data:image/png;base64," + imgBase64;
-    });
-</script>
+</p>
 
 {% endblock %}
