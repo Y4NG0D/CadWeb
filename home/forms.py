@@ -102,7 +102,7 @@ class ProdutoForm(forms.ModelForm):
 
 class EstoqueForm(forms.ModelForm):
     class Meta:
-        model: Estoque
+        model = Estoque
         fields = ['produto', 'qtde']
 
         widgets = {

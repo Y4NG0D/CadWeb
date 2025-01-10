@@ -1,8 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Categoria, Cliente, Produto
-from .forms import CategoriaForm, ClienteForm, ProdutoForm
+from .models import Categoria, Cliente, Produto, Estoque
+from .forms import CategoriaForm, ClienteForm, ProdutoForm, EstoqueForm
 
 def index(request):
     return render(request,'index.html')
