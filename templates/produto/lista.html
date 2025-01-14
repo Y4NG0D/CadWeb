@@ -24,6 +24,8 @@
     <tbody>
     {% for produto in listaProduto %}
       <tr>
+        <td class="style_list">{{produto.id}}</td>
+        <td><img src="{{ produto.img_base64 }}" width="55" height="55" class="style_list"></td>
         <td>{{ produto.id }}</td>
         <td>{{ produto.nome }}</td>
         <td>{{ produto.preco}}</td>
