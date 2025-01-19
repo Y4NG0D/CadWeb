@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+
+{% block titulo_conteudo %} Isso é um teste {% endblock titulo_conteudo %}
+
+
+{% block conteudo %} 
+    <p>
+        <label for="estado">Digite um Estado: </label>
+        <input type="text" data-hidden="#idestado" class="autocomplete">
+        <input type="hidden" id="idestado">
+    </p>
+
+    <p>
+        <label for="estado">Digite outro Estado: </label>
+        <input type="text" data-hidden="#idestado" class="autocomplete">
+        <input type="hidden" id="idestado">
+    </p>
+
+    <p>
+        <label for="estado">Digite mais um Estado: </label>
+        <input type="text" data-hidden="#idestado" class="autocomplete">
+        <input type="hidden" id="idestado">
+    </p>
+
+
+
+{% endblock conteudo %}
+
+
+{% block javascript %}
+
+
+<script>
+    $(document).ready(function () {
+        // Lista de países
+        const estados = [
+            { id: 1, label: 'Piauí'},
+            { id: 2, label: 'Rio de Janeiro'},
+            { id: 3, label: 'Minas Gerais'},
+            { id: 4, label: 'Bahia'},
+            { id: 5, label: 'Paraná'},
+        ];
+
+        // Ativando o autocomplete no campo
+        $(".autocomplete").autocomplete({
+            source: estados, // Fonte de dados para o autocomplete
+            minLength: 1,
+            select: function(event, ui) {
+                $(this).val(ui.item.label);
+                var campo_hidden = $(this).data('hidden'); 
+                $(campo_hidden).val(ui.item.id);
+                return false;
+            }
+        });
+
+    });
+</script>
+
+
+{% endblock javascript %}

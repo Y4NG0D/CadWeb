@@ -22,4 +22,9 @@ urlpatterns = [
     path('detalhe_produto/<int:id>/', views.detalhe_produto, name='detalhe_produto'),
     ########## Estoque ##########
     path('ajustar_estoque/<int:id>', views.ajustar_estoque, name='ajustar_estoque'),
+    ########## Teste ##########
+    path('teste1/', views.teste1, name='teste1'),
+    path('teste2/', views.teste2, name='teste2'),
+    path('buscar_dados/<str:app_modelo>/', views.buscar_dados, name='buscar_dados'),
+    path('teste3/', views.teste3, name='teste3'),
 ]   
