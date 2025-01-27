@@ -135,6 +135,8 @@ def detalhe_cliente(request, id):
 
     return render(request, 'cliente/detalhes.html', {'cliente':cliente,})
 
+################# PRODUTO ###################
+
 def produto(request):
     contexto = {
         'listaProduto': Produto.objects.all().order_by('-id')
@@ -237,8 +239,8 @@ def teste3(request):
 #################PEDIDO####################
 
 def pedido(request):
-    lista = Pedido.objects.all().order_by('-id')
-    return render(request, 'pedido/lista.html', {'lista': lista})
+    listaPedido = Pedido.objects.all().order_by('-id')
+    return render(request, 'pedido/lista.html', {'listaPedido': listaPedido})
 
 def novo_pedido(request,id):
     if request.method == 'GET':
@@ -256,4 +258,4 @@ def novo_pedido(request,id):
         form = PedidoForm(request.POST)
         if form.is_valid():
             pedido = form.save()
-            return redirect('pedido')
+            return redirect('listaPedido')
