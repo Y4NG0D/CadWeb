@@ -25,6 +25,14 @@
             value="{{item_pedido.produto.nome}}" 
             data-hidden="#id_produto" >
     </p>
+    <p>
+      <label for="id_produto_qtde">Qtde</label>    
+     <input type="text" class="form-control autocomplete" 
+             id="id_produto_qtde" 
+             data-url="{% url 'buscar_dados' 'home.Produto' %}" 
+             value="{{item_pedido.produto.nome}}" 
+             data-hidden="#id_produto" >
+     </p>
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary btn-sm">Salvar Produto</button>
     <button type="button" onclick="location=''" class="btn btn-primary btn-sm">Registrar Pagamento</button>
