@@ -83,7 +83,10 @@ class ItemPedido(models.Model):
     qtde = models.PositiveIntegerField()
     preco = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def save(self, *args, **kwargs):
+        if not self.preco and self.produto:  # Se preco não foi definido, pega do Produto
+            self.preco = self.produto.preco
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.produto.nome} (Qtd: {self.qtde}) - Preço Unitário: {self.preco}" 
-    
+        return f"{self.produto.nome} (Qtd: {self.qtde}) - Preço Unitário: {self.preco}"

@@ -117,11 +117,11 @@ class PedidoForm(forms.ModelForm):
 class ItemPedidoForm(forms.ModelForm):
     class Meta:
         model = ItemPedido
-        fields = ['pedido','produto', 'qtde']
-
+        fields = ['pedido', 'produto', 'qtde', 'preco']  # Incluímos preco
 
         widgets = {
-            'pedido': forms.HiddenInput(),  # Campo oculto para armazenar o ID
-            'produto': forms.HiddenInput(),  # Campo oculto para armazenar o ID
-            'qtde':forms.TextInput(attrs={'class': 'form-control',}),
+            'pedido': forms.HiddenInput(),
+            'produto': forms.HiddenInput(),
+            'qtde': forms.TextInput(attrs={'class': 'form-control'}),
+            'preco': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})  # Somente leitura
         }

@@ -261,13 +261,24 @@ def novo_pedido(request,id):
             return redirect('listaPedido')
 
 def detalhe_pedido(request, id):
-    try:
-        pedido = get_object_or_404(Pedido, pk=id)
-    except:
-        messages.error(request, 'Registro não encontrado')
-        return redirect('listaPedido')
+    pedido = get_object_or_404(Pedido, pk=id)
 
-    return render(request, 'pedido/detalhes.html', {'pedido':pedido,})
+    if request.method == "POST":
+        form = ItemPedidoForm(request.POST)
+        if form.is_valid():
+            item_pedido = form.save(commit=False)
+            item_pedido.pedido = pedido  # Associa o item ao pedido correto
+            item_pedido.save()
+            messages.success(request, "Produto adicionado ao pedido com sucesso!")
+            return redirect('detalhe_pedido', id=pedido.id)
+        else:
+            messages.error(request, "Erro ao adicionar o produto ao pedido.")
+
+    else:
+        form = ItemPedidoForm(initial={'pedido': pedido})
+
+    return render(request, 'pedido/detalhes.html', {'pedido': pedido, 'form': form})
+
 
 def editar_pedido(request, id):
     try:
@@ -301,23 +312,28 @@ def remover_pedido(request, id):
     
     return redirect('listaPedido')
 
-def detalhes_pedido(request, id):
+def detalhe_pedido(request, id):
     try:
-        pedido = Pedido.objects.get(pk=id)
-    except Pedido.DoesNotExist:
-        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        pedido = get_object_or_404(Pedido, pk=id)
+    except:
         messages.error(request, 'Registro não encontrado')
-        return redirect('pedido')  # Redireciona para a listagem    
-    
-    if request.method == 'GET':
-        itemPedido = ItemPedido(pedido=pedido)
-        form = ItemPedidoForm(instance=itemPedido)
-    else:
+        return redirect('listaPedido')
+
+    if request.method == 'POST':
         form = ItemPedidoForm(request.POST)
-        # aguardando implementação POST, salvar item
-    
-    contexto = {
-        'pedido': pedido,
-        'form': form,
-    }
-    return render(request, 'pedido/detalhes.html',contexto )
+        if form.is_valid():
+            item_pedido = form.save(commit=False)
+            produto_id = form.cleaned_data['produto']  # Pega o produto enviado
+            produto = Produto.objects.get(id=produto_id)
+            item_pedido.preco = produto.preco  # Preenche o campo preco com o preço do produto
+            item_pedido.pedido = pedido  # Associação ao pedido
+            item_pedido.save()
+
+            messages.success(request, "Produto adicionado com sucesso.")
+            return redirect('detalhe_pedido', id=pedido.id)  # Redireciona para o detalhe do pedido
+        else:
+            messages.error(request, "Erro ao adicionar o produto.")
+    else:
+        form = ItemPedidoForm()
+
+    return render(request, 'pedido/detalhes.html', {'pedido': pedido, 'form': form})
