@@ -1,12 +1,16 @@
 import locale
 from django.db import models
 
+################### CATEGORIA ###################
+
 class Categoria(models.Model): 
     nome = models.CharField(max_length = 100)
     ordem = models.IntegerField()
 
     def __str__(self):
         return self.nome
+    
+################### CLIENTE ###################
     
 class Cliente(models.Model):
     nome = models.CharField(max_length=100) 
@@ -23,6 +27,8 @@ class Cliente(models.Model):
                return self.datanasc.strftime('%d/%m/%Y')
           return None
     
+################### PRODUTO ###################
+    
 class Produto(models.Model):
      nome = models.CharField(max_length=100)
      preco = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
@@ -38,12 +44,16 @@ class Produto(models.Model):
           estoque_item, flag_create = Estoque.objects.get_or_create(produto=self, defaults={'qtde': 0})
           return estoque_item
      
+################### ESTOQUE ###################
+
 class Estoque(models.Model):
      produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
      qtde = models.IntegerField()
 
      def __str__(self):
           return f'{self.produto.nome} - Quantidade: {self.qtde}'
+     
+################### PEDIDO ###################
 
 class Pedido(models.Model):
 
@@ -77,6 +87,18 @@ class Pedido(models.Model):
             return self.data_pedido.strftime('%d/%m/%Y %H:%M')
         return None
     
+    @property
+    def total(self):
+        """Calcula o total de todos os itens no pedido, formatado como moeda local"""
+        total = sum(item.qtde * item.preco for item in self.itempedido_set.all())
+        return total
+
+    @property
+    def qtdeItens(self):
+        """Conta a qtde de itens no pedido, """
+        return self.itempedido_set.count()  
+
+    
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
@@ -90,3 +112,8 @@ class ItemPedido(models.Model):
 
     def __str__(self):
         return f"{self.produto.nome} (Qtd: {self.qtde}) - Preço Unitário: {self.preco}"
+    
+    @property
+    def total(self):
+        ###Calcula o total do item, formatado como moeda local###
+        return self.qtde * self.preco
