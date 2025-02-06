@@ -57,12 +57,10 @@ class Estoque(models.Model):
 
 class Pedido(models.Model):
 
-
     NOVO = 1
     EM_ANDAMENTO = 2
     CONCLUIDO = 3
     CANCELADO = 4
-
 
     STATUS_CHOICES = [
         (NOVO, 'Novo'),
@@ -71,49 +69,45 @@ class Pedido(models.Model):
         (CANCELADO, 'Cancelado'),
     ]
 
-
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     produtos = models.ManyToManyField(Produto, through='ItemPedido')
     data_pedido = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=NOVO)
 
-
     def __str__(self):
             return f"Pedido {self.id} - Cliente: {self.cliente.nome} - Status: {self.get_status_display()}"
     
     @property
-    def data_pedido_formatado(self):
+    def data_pedidof(self):
         if self.data_pedido:
             return self.data_pedido.strftime('%d/%m/%Y %H:%M')
         return None
-    
-    @property
-    def total(self):
-        """Calcula o total de todos os itens no pedido, formatado como moeda local"""
-        total = sum(item.qtde * item.preco for item in self.itempedido_set.all())
-        return total
 
     @property
+    def total(self):
+        total = sum(item.qtde * item.preco for item in self.itempedido_set.all())
+        return total
+    
+    @property
     def qtdeItens(self):
-        """Conta a qtde de itens no pedido, """
-        return self.itempedido_set.count()  
+        return self.itempedido_set.count() 
 
     
 class ItemPedido(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)  
     qtde = models.PositiveIntegerField()
     preco = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def save(self, *args, **kwargs):
-        if not self.preco and self.produto:  # Se preco não foi definido, pega do Produto
-            self.preco = self.produto.preco
-        super().save(*args, **kwargs)
-
     def __str__(self):
-        return f"{self.produto.nome} (Qtd: {self.qtde}) - Preço Unitário: {self.preco}"
+        return f"{self.produto.nome} (Qtde: {self.qtde}) - Preço Unitário: {self.preco}"
     
     @property
+    def calculoTotal(self):
+        total = self.qtde * self.preco
+        return total
+
+    @property
     def total(self):
-        ###Calcula o total do item, formatado como moeda local###
-        return self.qtde * self.preco
+        total = sum(item.qtde * item.preco for item in self.itempedido_set.all())
+        return total
