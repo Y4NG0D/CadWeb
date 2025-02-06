@@ -12,7 +12,11 @@
 <hr>
 <!-- Formulário para adicionar novos produtos -->
 <h5>Adicionar Produto</h5>
+{% if pedido.id %}
 <form method="POST" action = "{% url 'novo_pedido' pedido.id %}">
+{% else %}
+<form method="POST" action="#">
+{% endif %}
     {% csrf_token %}
     {{ form.pedido }}
     
@@ -31,10 +35,11 @@
     </p>
     <p>
         <label for="id_produto_preco">Preço Unitário:</label>    
-        {{ form.preco }}
+        {{ form.produto.preco }}
     </p>
-    <input type="hidden" name="produto" id="id_produto" value="{{ item_pedido.produto.id }}">
-    <button type="submit" class="btn btn-primary btn-sm">Salvar Produto</button>
+
+    <input type="hidden" name="produto" id="id_produto" value="{{ item_pedido.produto.id|default:'' }}">
+    <button type="submit" class="btn btn-primary btn-sm" id="confirm-btn">Salvar Produto</button>
     <button type="button" onclick="location=''" class="btn btn-primary btn-sm">Registrar Pagamento</button>
 </form>
 
@@ -70,8 +75,7 @@
             <td>{{ item.total|floatformat:2 }}</td>
             <td>
               <a href="{% url 'editar_pedido' item.id %}" class="btn btn-warning btn-sm">Editar</a>
-              <a href="{% url 'remover_pedido' item.id %}" class="btn btn-danger btn-sm" 
-              onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</a>
+              <a href="{% url 'remover_pedido' item.id %}" class="btn btn-danger btn-sm remove-btn" data-id="{{ item.id }}">Remover</a>
             </td>         
         </tr>
         {% endfor %}
@@ -93,6 +97,28 @@
       onCancel: function() {
         alert('Cancelado!');
       }
+    });
+</script>
+<script>
+    $('#confirm-btn').confirmation({
+      rootSelector: '#confirm-btn',
+      title: 'Você tem certeza?',
+      btnOkLabel: 'Sim',
+      btnCancelLabel: 'Não',
+      onConfirm: function() {
+        alert('Confirmado!');
+      },
+      onCancel: function() {
+        alert('Cancelado!');
+      }
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            if (!confirm('Tem certeza que deseja remover este item?')) {
+                event.preventDefault();
+            }
+        });
     });
 </script>
 {% endblock javascript %}

@@ -30,7 +30,7 @@ urlpatterns = [
     ########## Pedido ##########
     path('pedido/lista/', views.pedido, name='listaPedido'),
     path('pedido/novo_pedido/<int:id>/', views.novo_pedido, name='novo_pedido'),
-    path('pedido/detalhe_pedido/<int:id>', views.detalhe_pedido, name='detalhe_pedido'),
+    path('detalhe_pedido/<int:id>', views.detalhe_pedido, name='detalhe_pedido'),
     path('editar_pedido/<int:id>/', views.editar_pedido, name='editar_pedido'),
     path('remover_pedido/<int:id>/', views.remover_pedido, name='remover_pedido'),
 ]   

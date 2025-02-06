@@ -345,25 +345,41 @@ def editar_pedido(request, id):
     }
     return render(request, 'pedido/detalhes.html', contexto)
 
-def remover_pedido(request, id):
-    try:
-        item_pedido = ItemPedido.objects.get(pk=id)
-    except ItemPedido.DoesNotExist:
-        messages.error(request, 'Registro não encontrado')
-        return redirect('pedido')  # Redireciona para a listagem de pedidos caso não encontre o item
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.contrib import messages
+from .models import ItemPedido
 
-    pedido_id = item_pedido.pedido.id  # Armazena o ID do pedido antes de remover o item
-    produto = item_pedido.produto  # Obtém o produto relacionado ao item
-    estoque = produto.estoque  # Obtém o estoque do produto
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.contrib import messages
+from .models import ItemPedido
+
+def remover_pedido(request, id):
+    print(f"Removendo item com ID: {id}")  # Debug para verificar o ID recebido
+
+    item_pedido = ItemPedido.objects.filter(pk=id).first()
+    if not item_pedido:
+        messages.error(request, 'Item não encontrado.')
+        return redirect('pedido')  # Redireciona para a lista de pedidos
+
+    pedido = item_pedido.pedido
+    pedido_id = pedido.id if pedido else None
+
+    produto = item_pedido.produto
+    estoque = getattr(produto, 'estoque', None)  # Evita erro se estoque não existir
 
     if estoque:
-        estoque.qtde += item_pedido.qtde  # Reintegra a quantidade do item ao estoque
-        estoque.save()  # Salva as alterações no estoque
+        estoque.qtde += item_pedido.qtde
+        estoque.save()
 
-    item_pedido.delete()  # Remove o item do pedido
+    item_pedido.delete()
     messages.success(request, 'Item removido com sucesso e estoque atualizado!')
 
-    return redirect('detalhes_pedido', id=pedido_id)  # Retorna à página do pedido
+    if pedido_id:
+        return redirect(reverse('detalhes_pedido', args=[pedido_id]))
+    else:
+        return redirect('pedido')
 
 
 def detalhes_pedido(request, id):
