@@ -375,13 +375,27 @@ def remover_item_pedido(request, id):
 def remover_pedido(request, id):
     try:
         pedido = Pedido.objects.get(pk=id)
+        itens_pedido = ItemPedido.objects.filter(pedido=pedido)  # Obtém todos os itens do pedido
+
+        # Devolve cada item ao estoque antes de excluir o pedido
+        for item in itens_pedido:
+            estoque_item = Estoque.objects.get(produto=item.produto)  # Obtém o estoque correto
+            estoque_item.qtde += item.qtde  # Atualiza a quantidade no estoque
+            estoque_item.save()  # Salva a atualização no banco de dados
+        
+        # Agora que os itens foram devolvidos ao estoque, podemos removê-los
+        itens_pedido.delete()
+        
+        # Exclui o pedido após os itens terem sido removidos corretamente
         pedido.delete()
-        messages.success(request, 'Exclusão realizda com Sucesso.')
-    except:
+        
+        messages.success(request, 'Exclusão realizada com sucesso.')
+    except Pedido.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
-        return redirect('listaPedido')
-    
-    return redirect('listaPedido')
+    except Estoque.DoesNotExist:
+        messages.error(request, 'Erro ao atualizar estoque. Produto não encontrado.')
+
+    return redirect('pedido')
 
 @login_required
 def editar_item_pedido(request, id):
@@ -481,8 +495,3 @@ def remover_pagamento(request, id):
         return redirect('form_pagamento', id=pagamento_id)
     
     return redirect('form_pagamento', id=pagamento_id)
-
-@login_required
-def user_logout(request):
-    logout(request)
-    return redirect('login')  # Redireciona para a página de login
