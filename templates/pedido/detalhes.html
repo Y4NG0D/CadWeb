@@ -61,6 +61,38 @@
 
     <hr>
 
+    <h5>Pagamento(s)</h5>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Valor (R$)</th>
+            <th>Forma</th>
+            <th>Data</th>
+            <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagamento in form.instance.pedido.pagamentos %}
+            <tr>
+            <td>{{ pagamento.id }}</td>
+            <td>{{ pagamento.valor }}</td>
+            <td>{{ pagamento.get_forma_display }}</td>
+            <td>{{ pagamento.data_pgtof }}</td>
+    
+    
+            <td>
+                <a onclick="location.href='{% url 'editar_pagamento' pagamento.id %}'" class="btn btn-warning btn-sm">Editar</a>
+                <a onclick="confirmClose('{% url 'remover_pagamento' pagamento.id %}')" class="btn btn-danger btn-sm" 
+                >Excluir</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+
+    <hr>
+
     <p><strong>Total de Pedidos: R$</strong> {{ pedido.total }}</p>
     <p><strong>Total de Pago: R$</strong> {{ pedido.total_pago }}</p>
     <p><strong>Débito: R$</strong> {{ pedido.debito }}</p>

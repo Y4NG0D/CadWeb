@@ -6,6 +6,7 @@ from .forms import *
 from django.http import JsonResponse
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 @login_required
 def index(request):
@@ -513,6 +514,38 @@ def form_pagamento(request,id):
     return render(request, 'pedido/pagamento.html',contexto)
 
 @login_required
+def editar_pagamento(request, id):
+    try:
+        pagamento = Pagamento.objects.get(pk=id)
+        pagamento_id = pagamento.pedido.id
+        quantidade_anterior_paga = pagamento.valor  # Armazena a quantidade anterior
+        print(f'anteiror: {quantidade_anterior_paga}')
+    except:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('form_pagamento', id=pagamento_id)
+
+    if (request.method == 'POST'):
+        form = PagamentoForm(request.POST, instance=pagamento)
+        if form.is_valid():
+            pagamento_atual = pagamento.pedido.total
+            print(f'soma: {pagamento_atual}')
+
+            pagamento_atual = pagamento_atual - pagamento.valor
+
+            print(f'Final: {pagamento_atual}')
+            form.save()
+            messages.success(request, "Pagamento atualizado com sucesso!")
+            return redirect('form_pagamento', id=pagamento_id)
+            # return render(request, 'produto/lista.html', {'listaProduto':listaProduto,})
+        else:
+            messages.success(request, "Pagamento atualizado com sucesso!")
+
+    else: 
+        form = PagamentoForm(instance=pagamento)
+    
+    return render(request, 'pedido/pagamento.html', {'form':form,})
+
+@login_required
 def remover_pagamento(request, id):
     try:
         pagamento = Pagamento.objects.get(pk=id)
@@ -524,3 +557,8 @@ def remover_pagamento(request, id):
         return redirect('form_pagamento', id=pagamento_id)
     
     return redirect('form_pagamento', id=pagamento_id)
+
+@login_required(login_url='login')
+def logout_view(request):
+    logout(request)
+    return redirect('login')
