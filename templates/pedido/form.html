@@ -7,7 +7,6 @@
 <form method="post">
     {% csrf_token %}    
 
-
     <p>
       <label for="id_cliene">Cliente:</label>
       <span class="form-control" >{{form.instance.cliente.nome}}</span>
@@ -15,7 +14,7 @@
     </p>
     <p>
       <label for="id_data">Data:</label>
-      <span class="form-control" >{{ data_atual }}</span>
+      <span class="form-control" >{{ data_atual|date:"d/m/Y H:i" }}</span>
      </p>
   
     <p>
@@ -23,10 +22,11 @@
       <span class="form-control" >{{form.instance.get_status_display}}</span>
      </p>    
 
-    {{ form.as_p }}
 
+    {{ form.as_p }}
+    
     <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
-    <button class="btn btn-secondary btn-sm" type="button" onclick="location.href='{% url 'listaCliente' %}'">Voltar</button>
+    <a href="{% url 'clientes' %}" class="btn btn-secondary btn-sm">Voltar</a>
 </form>
 
 {% endblock conteudo %}
