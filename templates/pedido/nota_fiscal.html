@@ -82,7 +82,7 @@
                         <td>{{ item.produto.nome }}</td>
                         <td>{{ item.qtde }}</td>
                         <td class="small-text">R$ {{ item.preco|floatformat:2 }}</td>
-                        <td class="small-text">R$ {{ item.qtde|floatformat:2|add:item.preco|floatformat:2 }}</td>
+                        <td class="small-text">R$ {{ item.calculoTotal|floatformat:2 }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -96,7 +96,7 @@
                     <strong>PIS........:</strong> R$ {{ pedido.pis|floatformat:2 }}
                 </div>
                 <div style="text-align: right;">
-                    <strong>IPI................:</strong> R$ {{ pedido.ipi|floatformat:2 }}<br>
+                    <strong>IPI.............:</strong> R$ {{ pedido.ipi|floatformat:2 }}<br>
                     <strong>COFINS....:</strong> R$ {{ pedido.cofins|floatformat:2 }}
                 </div>
             </div>
@@ -104,9 +104,9 @@
         
 
         <div class="box">
-            <strong>Total:</strong> R$ {{ pedido.total|floatformat:2 }}<br>
-            <strong>Impostos:</strong> R$ {{ pedido.total_impostos|floatformat:2 }}<br>
-            <strong>Valor Final:</strong> R$ {{ pedido.total_com_impostos|floatformat:2 }}
+            <strong>Total..............:</strong> R$ {{ pedido.total|floatformat:2 }}<br>
+            <strong>Impostos......:</strong> R$ {{ pedido.total_impostos|floatformat:2 }}<br>
+            <strong>Valor Final....:</strong> R$ {{ pedido.total_com_impostos|floatformat:2 }}
         </div>
 
         <div class="footer">Recebemos os produtos constantes nesta nota fiscal.</div>
