@@ -14,42 +14,84 @@
     <style>
         /* Estilos personalizados */
         body {
-            background: #f8f9fa; /* Cor de fundo suave */
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Gradiente de fundo */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .card {
-            border-radius: 15px; /* Bordas arredondadas */
-            border: none; /* Remove borda padrão */
+            border-radius: 20px; /* Bordas arredondadas mais suaves */
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            background-color: #fff;
+            padding: 2rem;
+            width: 100%;
+            max-width: 380px;
+            transition: transform 0.3s ease; /* Transição suave ao passar o mouse */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Aumento de escala ao passar o mouse */
+        }
+        h3 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-label {
+            font-size: 0.9rem;
+            color: #333;
         }
         .form-control:focus {
-            box-shadow: none; /* Remove sombra padrão do Bootstrap */
-            border-color: #0d6efd; /* Cor da borda ao focar */
+            border-color: #2575fc; /* Cor da borda ao focar */
+            box-shadow: 0 0 10px rgba(37, 117, 252, 0.5); /* Efeito de foco suave */
         }
         .input-group-text {
-            background: #fff; /* Fundo branco para os ícones */
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            color: #2575fc;
+        }
+        .btn-primary {
+            background-color: #2575fc;
+            border-color: #2575fc;
+            padding: 12px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+        .input-group-text i {
+            color: #2575fc;
+        }
+        .small {
+            color: #888;
+            font-size: 0.8rem;
         }
     </style>
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100">
-    <!-- Container principal do card -->
-    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
-        <!-- Título com ícone -->
-        <h3 class="text-center mb-4"><i class="fas fa-lock me-2"></i>Cad Web - Login</h3>
+<body>
+    <div class="card">
+        <h3><i class="fas fa-lock me-2"></i>YanGod Store - Login</h3>
         
-        <!-- Seção de mensagens do sistema -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-danger alert-custom d-flex align-items-center" role="alert">
-                    <i class="fas fa-times-circle error-x"></i>
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <i class="fas fa-times-circle me-2"></i>
                     {{ message }}
                 </div>
             {% endfor %}
         {% endif %}
 
-        <!-- Formulário de login -->
         <form method="post">
             {% csrf_token %}
             
-            <!-- Tratamento de erros gerais do formulário -->
             {% if form.non_field_errors %}
                 <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
                     <i class="fas fa-times-circle me-2"></i>
@@ -58,51 +100,33 @@
                     {% endfor %}
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
                 </div>
-                
             {% endif %}
 
-            <!-- Campo de usuário -->
             <div class="mb-3">
-                <label class="form-label">Usuário</label>
+                <label class="form-label" for="username">Usuário</label>
                 <div class="input-group">
-                    <!-- Ícone do usuário -->
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" 
-                           name="username" 
-                           class="form-control" 
-                           placeholder="Digite seu usuário"
-                           required
-                           autofocus> <!-- Foco automático ao carregar -->
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Digite seu usuário" required autofocus>
                 </div>
             </div>
 
-            <!-- Campo de senha -->
             <div class="mb-4">
-                <label class="form-label">Senha</label>
+                <label class="form-label" for="password">Senha</label>
                 <div class="input-group">
-                    <!-- Ícone de cadeado -->
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" 
-                           name="password" 
-                           class="form-control" 
-                           placeholder="Digite sua senha"
-                           required> <!-- Campo obrigatório -->
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Digite sua senha" required>
                 </div>
-                <!-- Texto de ajuda sobre case sensitivity -->
-                <small class="text-muted">Diferenciamos maiúsculas e minúsculas</small>
+                <small class="small">Diferenciamos maiúsculas e minúsculas</small>
             </div>
 
-            <!-- Botão de submit -->
-            <button type="submit" class="btn btn-primary w-100 py-2">
+            <button type="submit" class="btn btn-primary w-100">
                 <i class="fas fa-sign-in-alt me-2"></i>Entrar
             </button>
         </form>
     </div>
 
     <!-- Scripts necessários -->
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap Bundle com Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

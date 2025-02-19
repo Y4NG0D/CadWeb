@@ -23,8 +23,8 @@
     </p>
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary btn-sm">Salvar Produto</button>
-    <a href="{% url 'form_pagamento' pedido.id %}" class="btn btn-primary btn-sm">Registrar Pagamento</a>
-    <a href="{% url 'nota_fiscal' pedido.id %}" class="btn btn-primary btn-sm">Nota Fiscal</a>
+    <a href="{% url 'form_pagamento' pedido.id %}" class="btn btn-success btn-sm">Registrar Pagamento</a>
+    <a href="{% url 'nota_fiscal' pedido.id %}" class="btn btn-warning btn-sm">Nota Fiscal</a>
 </form>
 
 <hr>
