@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.apps import apps
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
@@ -556,3 +557,8 @@ def remover_pagamento(request, id):
     pagamento.delete()
     messages.success(request, 'Pagamento removido com sucesso!')
     return redirect('form_pagamento', id=pedido_id)
+
+@login_required
+def nota_fiscal(request, id):
+    pedido = get_object_or_404(Pedido, pk=id)
+    return render(request, 'pedido/nota_fiscal.html', {'pedido': pedido}) 

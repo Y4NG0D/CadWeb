@@ -1,5 +1,7 @@
 import locale
 from django.db import models
+import hashlib
+from decimal import Decimal
 
 ################### CATEGORIA ###################
 
@@ -105,6 +107,42 @@ class Pedido(models.Model):
     def debito(self):
         valor_debito = self.total - self.total_pago 
         return valor_debito
+    
+    @property
+    def chave_acesso(self):
+        chave_base = f"{self.id}{self.data_pedido.strftime('%Y%m%d%H%M%S')}"
+        return hashlib.sha256(chave_base.encode()).hexdigest()[:44]
+    
+    @property
+    def total_pedido(self):
+        return sum(item.calculoTotal for item in self.itempedido_set.all())
+    
+    @property
+    def icms(self):
+        return self.total_pedido * Decimal('0.18')
+
+    @property
+    def pis(self):
+        return self.total_pedido * Decimal('0.0165')
+
+    @property
+    def ipi(self):
+        return self.total_pedido * Decimal('0.05')
+
+    @property
+    def cofins(self):
+        return self.total_pedido * Decimal('0.076')
+
+    @property
+    def total_impostos(self):
+        return self.icms + self.pis + self.ipi + self.cofins
+    
+    @property
+    def total_com_impostos(self):
+        return self.total_pedido + self.total_impostos
+    
+
+
 
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
