@@ -142,8 +142,6 @@ class Pedido(models.Model):
         return self.total_pedido + self.total_impostos
     
 
-
-
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)    
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)  
